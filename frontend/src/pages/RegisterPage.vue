@@ -80,7 +80,7 @@ async function handleSubmit() {
           v-model="name" 
           type="text" 
           :class="['w-full px-4 py-2 border rounded-md text-sm outline-none transition-colors', errors.name ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-gray-300 focus:border-black focus:ring-1 focus:ring-black']"
-          placeholder="Jane Doe"
+          placeholder="Your Name"
         >
         <p v-if="errors.name" class="text-red-500 text-xs mt-1">{{ errors.name }}</p>
       </div>
@@ -91,7 +91,7 @@ async function handleSubmit() {
           v-model="email" 
           type="email" 
           :class="['w-full px-4 py-2 border rounded-md text-sm outline-none transition-colors', errors.email ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-gray-300 focus:border-black focus:ring-1 focus:ring-black']"
-          placeholder="jane@example.com"
+          placeholder="name@example.com"
         >
         <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
       </div>
