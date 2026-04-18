@@ -15,14 +15,9 @@ const loading = ref(false)
 
 function validate() {
   errors.value = {}
-  if (!email.value) {
-    errors.value.email = 'Email is required'
-  } else if (!/\S+@\S+\.\S+/.test(email.value)) {
-    errors.value.email = 'Please enter a valid email'
-  }
-  if (!password.value) {
-    errors.value.password = 'Password is required'
-  }
+  if (!email.value) errors.value.email = 'Email is required'
+  else if (!/\S+@\S+\.\S+/.test(email.value)) errors.value.email = 'Invalid email format'
+  if (!password.value) errors.value.password = 'Password is required'
   return Object.keys(errors.value).length === 0
 }
 
@@ -41,7 +36,7 @@ async function handleSubmit() {
     if (error.response?.data?.message) {
       serverError.value = error.response.data.message
     } else {
-      serverError.value = 'An error occurred. Please try again.'
+      serverError.value = 'Failed to sign in. Please try again.'
     }
   } finally {
     loading.value = false
@@ -50,50 +45,51 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="min-h-[80vh] flex items-center justify-center">
-    <div class="w-full max-w-md p-8">
-      <h1 class="text-2xl font-bold text-center text-gray-900 mb-8">Login</h1>
+  <div class="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold tracking-tight text-gray-900">Sign in</h1>
+      <p class="text-sm text-gray-500 mt-2">Enter your details to access your appointments</p>
+    </div>
 
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <div v-if="serverError" class="bg-red-50 text-red-600 p-3 rounded text-sm">
-          {{ serverError }}
-        </div>
+    <div v-if="serverError" class="mb-6 p-4 rounded-md bg-red-50 border border-red-100 text-sm text-red-600">
+      {{ serverError }}
+    </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            v-model="email"
-            type="email"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            :class="{ 'border-red-500': errors.email }"
-          />
-          <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
-            v-model="password"
-            type="password"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            :class="{ 'border-red-500': errors.password }"
-          />
-          <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
-        </div>
-
-        <button
-          type="submit"
-          :disabled="loading"
-          class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+    <form @submit.prevent="handleSubmit" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+        <input 
+          v-model="email" 
+          type="email" 
+          :class="['w-full px-4 py-2 border rounded-md text-sm outline-none transition-colors', errors.email ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-gray-300 focus:border-black focus:ring-1 focus:ring-black']"
+          placeholder="user@example.com"
         >
-          {{ loading ? 'Logging in...' : 'Login' }}
-        </button>
-      </form>
+        <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
+      </div>
 
-      <p class="text-center text-sm text-gray-600 mt-6">
-        Don't have an account?
-        <router-link to="/register" class="text-blue-600 hover:underline">Register</router-link>
-      </p>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <input 
+          v-model="password" 
+          type="password" 
+          :class="['w-full px-4 py-2 border rounded-md text-sm outline-none transition-colors', errors.password ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-gray-300 focus:border-black focus:ring-1 focus:ring-black']"
+          placeholder="••••••••"
+        >
+        <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
+      </div>
+
+      <button 
+        type="submit" 
+        :disabled="loading"
+        class="w-full bg-black text-white py-2.5 rounded-md text-sm font-medium hover:bg-gray-800 disabled:opacity-50 transition-colors mt-2"
+      >
+        {{ loading ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </form>
+
+    <div class="mt-6 text-center text-sm text-gray-600">
+      Don't have an account? 
+      <router-link to="/register" class="text-black font-medium hover:underline">Sign up</router-link>
     </div>
   </div>
 </template>
